@@ -42,9 +42,17 @@ def count_partitions(n, m):
     # The rest of the difference seems to be using m objects. remove m and you have n-m, m
     return count_partitions(n, m-1) + count_partitions(n-m, m)
 
-print(sum_nonnegative_ints_n(5))
-print(reverse_string('abcdefg'))
-print(reverse_string('abcd'))
-print(path_finder(2,4))
-print(path_finder(3,3))
-print(count_partitions(7,4))
+
+def factorial(n):
+    print(n)
+    if n <=1:
+        return 1
+    return n*factorial(n-1)
+
+# print(sum_nonnegative_ints_n(5))
+# print(reverse_string('abcdefg'))
+# print(reverse_string('abcd'))
+# print(path_finder(2,4))
+# print(path_finder(3,3))
+# print(count_partitions(7,4))
+print(factorial(5))

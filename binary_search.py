@@ -19,7 +19,7 @@ def find_in_sorted(nums, target, offset=0):
 def find_in_sorted_alt(nums, target, low, high):
 
     print(low, high)
-    if len(nums) == 0:
+    if len(nums) == 0 or low > high:
         return False, -1
     mid = ((high+low) // 2)
     if nums[mid] == target:
@@ -42,6 +42,47 @@ def frequency_in_sorted(nums, target):
         return frequency_in_sorted(nums[:mid], target) 
 
 
+def frequency_in_sorted_alt(nums, target, low ,high, n):
+    '''
+    find L -> leftmost target, separate binary search O(logN)
+    find R -> rightmost target, separate binary search O(logN)
+    return R - L + 1
+    '''
+
+
+def leftmost_index_target(nums, target, low, high):
+    print(low, high)
+    if low > high:
+        return -1
+    mid = (low + high) // 2
+    if nums[mid] == target and (nums[mid-1] < target or mid ==0):
+        return mid
+    elif nums[mid] < target:
+        return leftmost_index_target(nums, target, mid+1, high)
+    else: 
+        return leftmost_index_target(nums, target, low, mid-1)
+
+
+def rightmost_index_target(nums, target, low, high, n):
+    print(low, high)
+    if low > high:
+        return -1
+    mid = (low + high) // 2
+    if nums[mid] == target and (nums[mid+1] > target or mid == n-1):
+        return mid
+    elif nums[mid] > target:
+        return rightmost_index_target(nums, target, low, mid-1, n)
+    else:
+        return rightmost_index_target(nums, target, mid+1, high, n)
+
+
+
+
+def frequency_in_sorted(nums, target):
+    l = leftmost_index_target(nums, target, 0, len(nums)-1)
+    r = rightmost_index_target(nums, target, 0, len(nums)-1)
+
+
 def find_peak(nums, offset=0):
     print(nums, offset)
     if len(nums) == 1:
@@ -59,10 +100,10 @@ def find_peak(nums, offset=0):
 
 def find_peak_alt(nums, low, high):
     print(low, high)
-    if len(nums) == 1:
+    if low == high:
         return 0
-    elif len(nums) == 2:
-        return 0 if nums[0] > nums[1] else 1
+    elif high - low == 1:
+        return low if nums[low] > nums[high] else high
     mid = (low + high) // 2
     if nums[mid] > nums[mid+1] and nums[mid] > nums[mid-1]:
         return mid
@@ -71,20 +112,42 @@ def find_peak_alt(nums, low, high):
     else:
         return find_peak_alt(nums, mid+1, high)
 
+
+def middle_peak_in_shifted_sorted(nums, low, high, n):
+    print(low, high)
+    if low > high: 
+        return -1
+    mid = (low+high) // 2
+    if nums[mid] > nums[mid+1]:
+        return mid
+    elif nums[n-1] > nums[mid]:
+        return middle_peak_in_shifted_sorted(nums, low, mid-1, n)
+    else: 
+        return middle_peak_in_shifted_sorted(nums, mid+1, high, n)
+
 def number_left_roations_sorted(nums):
     '''
     sorted array rotated left x times, find x
     Soln: left shift creates a peak. number of elements to the right of the peak will be equal to x 
     '''
-    return len(nums) - 1 - find_peak(nums)
+    middle_peak = middle_peak_in_shifted_sorted(nums, 0, len(nums)-1, len(nums))
+    n = len(nums)
+    print(n, 'middle_peak', middle_peak)
+    return n -1  - (middle_peak + 1) + 1
 
 # print(find_in_sorted([1,2,3,4,5], 4))
-# print(find_in_sorted_alt([1,2,3,4,5], 5, 0, 5))
+# print(find_in_sorted_alt([1,2,3,4,5], 1, 0, 4))
 # print(find_in_sorted(sorted(range(30)), 17))
 # print(frequency_in_sorted([1,2,3,4,4,4,4,4,5,5,5,5,5,5,6], 5))
 # print(find_peak([4,5,6,7,0,1,2,3]))
-print(find_peak_alt([4,5,6,7,0,1,2,3], 0, 8))
-# print(number_left_roations_sorted([4,5,6,7,0,1,2,3]))
+# print(find_peak_alt([4,5,6,7,0,1,2,3,3], 0, 8))
+# print(middle_peak_in_shifted_sorted([4,5,6,7,0,1,2,3], 0, 7, 8))
+print(number_left_roations_sorted([4,5,6,7,0,1,2,3]))
+nums = [1,2,3,3,3,3,3,4,5]
+# print(leftmost_index_target(nums,3,0,len(nums)-1))
+# print(rightmost_index_target(nums,3,0,len(nums)-1, len(nums)))
+
+
 
 
 

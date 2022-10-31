@@ -3,6 +3,9 @@ from collections import defaultdict
 
 
 def max_consecutive_sum(nums, k):
+    '''
+    k consecutive digits with the max sum
+    '''
     current_sum = sum(nums[:k])
     max_sum = current_sum
     for i in range(len(nums)-k):
@@ -11,8 +14,18 @@ def max_consecutive_sum(nums, k):
         max_sum = max(max_sum, current_sum)
     return max_sum
 
-def longest_substring_without_repeat_chars():
-    return
+def longest_substring_without_repeat_chars(string):
+    start = 0
+    max_length = 0
+    char_set = set()
+    for end in range(len(string)):
+        while string[end] in char_set:
+            char_set.remove(string[start])
+            start += 1
+        max_length = max(end - start + 1, max_length)
+        char_set.add(string[end])
+    return max_length
+
 
 def smallest_subarray_greater_equal(nums, target):
     '''
@@ -47,13 +60,25 @@ def longest_substring_k_distinctchars(string, k):
         max_length = max(max_length, end + 1 - start)
     return max_length
 
-def string_permuations():
-    return
+# def permutation_in_string(string, key):
+    # key_map  = defaultdict(int)
+    # for char in key:
+    #     key_map[char] += 1
+    
+    
+    # start, end = 0, len(key) - 1
+    # string_map = defaultdict(int)
+    # for end in len(range(string)):
+    #     while 
+    #     string_map[string[end]] += 1
+
+    # return
 
 # print(max_consecutive_sum([100,200,900,300,400], 2))
 # print(max_consecutive_sum([4,2,1,7,8,1,2,8,1,0], 3))
 
 # print(smallest_subarray_greater_equal([4,2,2,7,8,1,2,8,10], 18))
-print(longest_substring_k_distinctchars('AAAHHIBC',3))
+# print(longest_substring_k_distinctchars('AAAHHIBC',3))
+print(longest_substring_without_repeat_chars('AAAHHIBC'))
 
 
